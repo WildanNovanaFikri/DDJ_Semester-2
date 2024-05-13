@@ -8,6 +8,8 @@ def hitung_tagihan():
     makan = ""
     gelas = 0
     minum = ""
+    makanan_dibeli = []  # List untuk menyimpan makanan yang dibeli
+    minuman_dibeli = []  # List untuk menyimpan minuman yang dibeli
     
     def hitung_makanan():
         nonlocal totalmakanan
@@ -36,6 +38,9 @@ def hitung_tagihan():
         elif nomor == 5:
             totalmakanan = porsi * 12000
             makan = "Mie Goreng"
+        
+        # Tambahkan makanan ke dalam list
+        makanan_dibeli.append(f"{porsi} {makan}")
 
     def hitung_minuman():
         nonlocal totalminuman
@@ -64,14 +69,29 @@ def hitung_tagihan():
         elif nomor == 5:
             totalminuman = gelas * 10000
             minum = "Es Campur"
-    
+        
+        # Tambahkan minuman ke dalam list
+        minuman_dibeli.append(f"{gelas} {minum}")
+
     hitung_makanan()
     hitung_minuman()
     
     totalsemua = totalmakanan + totalminuman
     
+    # Mengambil jumlah uang yang diberikan pelanggan
+    uang_diberikan = int(uang_entry.get())
+    
+    # Menghitung kembalian
+    kembalian = uang_diberikan - totalsemua
+    
     # Create a notification message
-    notification_msg = f"Total Belanjaan: Rp {totalsemua}\n\nTerima kasih telah berbelanja!"
+    notification_msg = f"Total Belanjaan: Rp {totalsemua}\n\nMakanan yang dibeli:\n"
+    for item in makanan_dibeli:
+        notification_msg += f"- {item}\n"
+    notification_msg += "\nMinuman yang dibeli:\n"
+    for item in minuman_dibeli:
+        notification_msg += f"- {item}\n"
+    notification_msg += f"\nUang yang diberikan: Rp {uang_diberikan}\nKembalian: Rp {kembalian}\n\nTerima kasih telah berbelanja!"
     
     # Show the notification
     messagebox.showinfo("Nota Pembayaran", notification_msg)
@@ -110,6 +130,11 @@ gelas_label = tk.Label(app, text="Berapa Gelas:")
 gelas_label.pack()
 gelas_entry = tk.Entry(app)
 gelas_entry.pack()
+
+uang_label = tk.Label(app, text="Uang Tunai Pembeli:")
+uang_label.pack()
+uang_entry = tk.Entry(app)
+uang_entry.pack()
 
 hitung_button = tk.Button(app, text="Hitung", command=hitung_tagihan)
 hitung_button.pack()
